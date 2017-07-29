@@ -16,7 +16,7 @@
         <!-- Ask for the Time if it was not provided -->
         <context id="reminder_time" if="empty($Time)">
             <!-- The user may provide both Date and Time -->
-            <output value="When should I remind you about this?" if="empty($Date)"/>
+            <output value="When should I remind you about $Text?" if="empty($Date)"/>
 
             <!-- Or ask only for the Time if the Date was provided -->
             <output value="Please tell me the reminder time"/>
