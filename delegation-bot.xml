@@ -1,5 +1,5 @@
 <context>
-  <input pattern="{[[name] $Name]}">
-    <output value="Hi! $Name"/>
+  <input pattern="{[[name] $Text]}">
+    <output value="Hi! $Text"/>
   </input>
 </context>
