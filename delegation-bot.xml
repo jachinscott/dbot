@@ -8,7 +8,7 @@
       <item>Blue</item>
       <item>Red</item>
     </sample>
-    <input pattern="* $Color *">
+    <input pattern="* $Text *">
       <output value="Nice! I like it too!"/>
     </input>
   </context>
