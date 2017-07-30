@@ -1,16 +1,42 @@
 <context>
-<input pattern="(hi|hello) *">
-  <output value="Hi! What's your favorite color?"/>
+    <input pattern="[* [delegated|delegate]] { [[to] $Text] [$Date] [$Time] }">
+        <!-- Jump to the reminder creation if Text and Time have been provided -->
+        <context id="reminder" if="full($Text) and full($Time)"/>
 
-  <context>
-    <sample>
-      <item>Green</item>
-      <item>Blue</item>
-      <item>Red</item>
-    </sample>
-    <input pattern="* $Text *">
-      <output value="Nice! I like it too!"/>
+        <!-- Ask for reminder text if it was not provided -->
+        <context if="empty($Text)" modal="true"> <!-- This context is modal because any text must be interpreted as reminder text -->
+            <output value="What task did you delegate?"/>
+
+            <input pattern="$Text">
+                <context id="reminder_time" if="empty($Time)"/> <!-- Ask for the Date and Time -->
+                <context id="reminder"/> <!-- Or create a reminder if the Time was provided -->
+            </input>
+        </context>
+
+        <!-- Ask for the Time if it was not provided -->
+        <context id="reminder_time" if="empty($Time)">
+            <!-- The user may provide both Date and Time -->
+            <output value="When should I remind you about this?" if="empty($Date)"/>
+
+            <!-- Or ask only for the Time if the Date was provided -->
+            <output value="When is this delegated task due?"/>
+
+            <input>
+                <pattern value="* {(* $Time) [$Date]} *"/>
+                <pattern value="* $Date *"/>
+
+                <context id="reminder_time" if="empty($Time)"/> <!-- Ask for Time -->
+                <context id="reminder"/> <!-- Or create a reminder -->
+            </input>
+        </context>
+
+        <!-- This context contains no inputs, it only contains actions -->
+        <context id="reminder">
+            <!-- Format date string if it is not empty -->
+            <var name="Fmt" value='fmt($Date, "EEEE, MMMM dd", $req_lang)' if="full($Date)"/>
+
+            <!-- Just response with text, date and time of a new reminder -->
+            <output value='OK, I will remind you about "$Text" on $Fmt at $Time'/>
+        </context>
     </input>
-  </context>
-</input>
 </context>
