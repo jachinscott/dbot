@@ -1,5 +1,5 @@
 <context>
-    <input pattern="[* [delegated|delegate]] { [[to] $Text] [$Date] [$Time] }">
+    <input pattern="[*] (delegated|delegate) [$Text] { [$Date] [$Time] }">
         <!-- Jump to the reminder creation if Text and Time have been provided -->
         <context id="reminder" if="full($Text) and full($Time)"/>
 
